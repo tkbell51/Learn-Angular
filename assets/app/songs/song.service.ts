@@ -16,10 +16,13 @@ export class SongService {
   constructor(private httpClient: HttpClient) {}
 
   addSong(song: Song): Observable<Song> {
+    console.log(song);
+    
       const token = localStorage.getItem("token") ? "?token=" + localStorage.getItem("token") : "";  
     return this.httpClient
       .post<Song>("http://localhost:3000/song", song)
       .map((result: any) => {
+        
         const newSong = new Song(
           result.obj.title,
           result.obj.artist,

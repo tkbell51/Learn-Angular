@@ -1,5 +1,8 @@
 import { Component } from "@angular/core";
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from "@angular/forms";
+import { FormGroup, FormControl, Validators} from "@angular/forms";
+import { User } from "./user.model";
+import { AuthService } from "./auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-login",
@@ -7,18 +10,25 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from "@angula
 })
 export class LoginComponent {
   myForm: FormGroup;
+  constructor(private authService: AuthService, private router: Router){}
 
   onSubmit() {
-    console.log(this.myForm);
-    this.myForm.reset();
+    const user = new User(this.myForm.value.username, this.myForm.value.password);
+    this.authService.login(user)
+      .subscribe(
+        data => {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("userId", data.userId);
+          this.router.navigateByUrl("/");
+        },
+        error => console.log(error)
+        
+      )
   }
 
   ngOnInit() {
     this.myForm = new FormGroup({
-      firstName: new FormControl(null, Validators.required),
-      lastName: new FormControl(null, Validators.required),
       username: new FormControl(null, Validators.required),
-      email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, Validators.required)
     });
   }
