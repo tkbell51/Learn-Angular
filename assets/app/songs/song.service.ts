@@ -20,7 +20,7 @@ export class SongService {
     
       const token = localStorage.getItem("token") ? "?token=" + localStorage.getItem("token") : "";  
     return this.httpClient
-      .post<Song>("http://localhost:3000/song", song)
+      .post<Song>("http://localhost:3000/song" + token, song)
       .map((result: any) => {
         
         const newSong = new Song(
@@ -29,9 +29,9 @@ export class SongService {
           result.obj.keySignature,
           result.obj.group,
           result.obj.url,
-          "Demo",
+          result.obj.user.firstName,
           result.obj._id,
-          "123"
+          result.obj.user._id
         );
         this.songs.push(newSong);
         return newSong;
@@ -53,9 +53,9 @@ export class SongService {
               song.keySignature,
               song.group,
               song.url,
-              "Demo",
+              song.user.firstName,
               song._id,
-              null
+              song.user._id
             )
           );
         }

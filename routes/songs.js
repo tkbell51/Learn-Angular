@@ -4,10 +4,11 @@ var songController = require('../controllers/songController');
 
 var Song = require('../models/song')
 
+router.get("/", songController.getSongs); //Get Song
+
+router.use('/', songController.authorizeUser);
 
 router.post("/", songController.createSong); //create Song
-
-router.get("/", songController.getSongs); //Get Song
 
 router.patch("/:id", songController.editSong); //Edit Song
 

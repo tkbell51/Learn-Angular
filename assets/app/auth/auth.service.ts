@@ -23,4 +23,12 @@ export class AuthService {
         return Observable.throw(error);
       });
   }
+
+  logout(){
+    localStorage.clear();
+  }
+
+  isLoggedIn(){
+    return localStorage.getItem('token') !== null;
+  }
 }

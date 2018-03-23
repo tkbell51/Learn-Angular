@@ -55,4 +55,8 @@ export class SongComponent {
         result => console.log(result)
       );
   }
+
+  belongsToUser(){
+    return localStorage.getItem('userId')== this.song.userId;
+  }
 }

@@ -1,13 +1,23 @@
 const mongoose = require('mongoose');
+const User = require('./user')
 
-const songSchema = new mongoose.Schema({
+var Schema = mongoose.Schema;
+
+const songSchema = new Schema({
   title: {type: String, required: true},
   artist: {type: String, required: true},
   keySignature: {type: String, required: true},
   group: {type: String}, //the group you play the song for
   url: {type: String}, //youtube url
-  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+  user: {type: Schema.Types.ObjectId, ref: 'User'}
 });
 
-const Song = mongoose.model('Song', songSchema);
-module.exports = Song;
+songSchema.post('remove', function(song){
+  User.findById(song.user,(err, user)=>{
+    user.songs.pull(song._id);
+    user.save();
+  });
+});
+
+
+module.exports = mongoose.model("Song", songSchema);
