@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators} from "@angular/forms";
 import { User } from "./user.model";
 import { AuthService } from "./auth.service";
@@ -12,7 +12,7 @@ export class LoginComponent {
   myForm: FormGroup;
   constructor(private authService: AuthService, private router: Router){}
 
-  onSubmit() {
+  onSubmit(): void {
     const user = new User(this.myForm.value.username, this.myForm.value.password);
     this.authService.login(user)
       .subscribe(

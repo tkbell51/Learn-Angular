@@ -17,8 +17,7 @@ import { AuthService } from "./auth.service";
           <div class="row spacing">
                 <router-outlet></router-outlet>
           </div>
-      `,
-  styles: [` `]
+      `
 })
 export class AuthenticationComponent {
   constructor(private authService: AuthService) {}

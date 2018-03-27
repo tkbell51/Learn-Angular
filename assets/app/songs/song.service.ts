@@ -6,6 +6,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/htt
 import 'rxjs/Rx';
 import { Observable } from "rxjs/Observable";
 import { Injectable, EventEmitter } from "@angular/core";
+import { ErrorService } from "../errors/error.service";
 
 @Injectable()
 export class SongService {
@@ -13,7 +14,7 @@ export class SongService {
 
    SongIsEdit = new EventEmitter<Song>();
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private errorService: ErrorService) {}
 
   addSong(song: Song): Observable<Song> {
     console.log(song);
@@ -37,6 +38,7 @@ export class SongService {
         return newSong;
       })
       .catch((error: HttpErrorResponse) => {
+        this.errorService.handleError(error);
         return Observable.throw(error);
       });
   }
@@ -63,6 +65,7 @@ export class SongService {
         return transformedSongs;
       })
       .catch((error: HttpErrorResponse) => {
+        this.errorService.handleError(error);        
         return Observable.throw(error);
       });
   }
@@ -76,6 +79,7 @@ export class SongService {
             : '';
         return this.httpClient.patch<Song>('http://localhost:3000/song/' + song.songId + token, song)
             .catch((error: HttpErrorResponse) => {
+        this.errorService.handleError(error);              
                 return Observable.throw(error);
   });
 }
@@ -85,6 +89,7 @@ export class SongService {
     const token = localStorage.getItem("token") ? "?token=" + localStorage.getItem("token") : "";
     return this.httpClient.delete<Song>("http://localhost:3000/song/" + song.songId + token)
       .catch((error: HttpErrorResponse) => {
+        this.errorService.handleError(error);        
         return Observable.throw(error);
       });
   }

@@ -49,7 +49,7 @@ module.exports = {
               error: {message: 'Invalid login credentials'}
           });
         }
-        let token = jwt.sign({user: user}, 'secret', {expiresIn: 7200});
+        const token = jwt.sign({user: user}, 'secret', {expiresIn: 7200});
         res.status(200).json({
           message: 'Successfully logged in',
           token: token,
